@@ -235,7 +235,7 @@ Do you want to contribute?. Please, follow the below suggestions:
 
 ## Change history
 
-To view change history, please visit: [HISTORY.md](https://github.com/dgaubert/express-metrics/blob/master/HISTORY.md)
+To view change history, please visit: [HISTORY.md](https://github.com/osmeteor/expressjs-metrics/blob/master/HISTORY.md)
 
 Versioning strategy:
 
@@ -245,4 +245,4 @@ Versioning strategy:
 
 ## License
 
-To view the MIT license, please visit: [The MIT License (MIT)](https://github.com/dgaubert/express-metrics/blob/master/LICENSE)
+To view the MIT license, please visit: [The MIT License (MIT)](https://github.com/osmeteor/expressjs-metrics/blob/master/LICENSE)
