@@ -157,6 +157,29 @@ Example:
 
 
 ```
+### use in strongloop  
+
+
+Example:
+
+```js 
+app.all("*",expressMetrics({
+port: 8091,
+// cluster: true,
+decimals: false,
+header: true,
+// statsd: {
+//     'host': 'localhost',
+//     'port': 8125,
+//     'prefix': require('os').hostname() + '.myService',
+//     'routes': {
+//         'showUserCampaigns': [{ path: '/campaigns/:userId/lite', methods: ['get']}],
+//         'showCampaign':  [{ path: '/campaign/:campaignId', methods: ['get']}],
+//         'showUserShops': { path: '/shop/:userId', method: 'get'}
+//     }
+}))
+
+```
 
 Just the routes that you indicate in the 'routes' option will be sent to statsd.
 
