@@ -5,7 +5,7 @@ var header = require('./lib/header');
 var chrono = require('./lib/chrono');
 var optionsChecker = require('./lib/options.checker');
 
-module.exports = function expressMetrics(options) {
+module.exports.expressMetrics = function expressMetrics(options) {
   var client;
 
   options = optionsChecker.check(options);
@@ -93,3 +93,18 @@ module.exports.listen = function listen(port) {
 module.exports.close = function close(callback) {
   builder.getServer().stop(callback);
 };
+module.exports.getMetric = function getMetric(name) {
+  var trackedMetrics=builder.getServer().getMetric(); 
+  if(arguments.length<1){
+    if(trackedMetrics)return trackedMetrics;
+    else return {};
+  }
+  else {
+    if(trackedMetrics[name]) return trackedMetrics[name];
+    else return {};
+  }
+};
+module.exports.setMetric = function setMetric(trackedMetrics) {
+  return builder.getServer().setMetric(trackedMetrics);
+};
+
