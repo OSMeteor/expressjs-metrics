@@ -1,7 +1,7 @@
 # expressjs-metrics
 
 
-Express middleware for collecting and reporting metrics about response times. base in express-metrics
+Express middleware for collecting and reporting metrics about response times. base in [express-metrics](https://github.com/dgaubert/express-metrics#readme)
 
 ## Installation
 
@@ -191,7 +191,7 @@ If cluster is __true__, delegate the start of the metrics server to master proce
 ```js
 var cluster = require('cluster');
 var express = require('express');
-var expressMetrics = require('express-metrics');
+var expressMetrics = require('expressjs-metrics');
 var numCPUs = require('os').cpus().length;
 
 if (cluster.isMaster) {
