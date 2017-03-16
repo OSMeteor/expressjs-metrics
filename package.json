@@ -1,7 +1,7 @@
 {
   "name": "expressjs-metrics",
   "description": "Express middleware for collecting and reporting metrics about response times",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "author": {
     "name": "osmeteor",
     "email": "meteorsoftware@qq.com"
@@ -25,7 +25,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git://github.com/dgaubert/express-metrics.git"
+    "url": "git://github.com/osmeteor/expressjs-metrics.git"
   },
   "scripts": {
     "test": "./node_modules/mocha/bin/mocha test/**/*.spec.js --require should",
