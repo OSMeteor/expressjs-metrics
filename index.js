@@ -40,7 +40,7 @@ module.exports = function expressMetrics(options) {
       // console.log(res.statusCode,req.originalUrl)
       if(res.statusCode>=200&&res.statusCode<400){
         client.send({
-          route: { path: req.originalUrl, stack: req.route.stack, methods: req.route.methods },
+          route: { path: req.baseUrl+req.route.path, stack: req.route.stack, methods: req.route.methods },
           method: req.method,
           status: res.statusCode,
           time: responseTime
