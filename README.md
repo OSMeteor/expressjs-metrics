@@ -1,8 +1,7 @@
-# express-metrics
+# expressjs-metrics
 
-[![Build Status](https://travis-ci.org/dgaubert/express-metrics.svg?branch=master)](https://travis-ci.org/dgaubert/express-metrics)
 
-Express middleware for collecting and reporting metrics about response times.
+Express middleware for collecting and reporting metrics about response times. base in express-metrics
 
 ## Installation
 
