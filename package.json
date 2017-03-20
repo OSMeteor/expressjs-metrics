@@ -1,7 +1,7 @@
 {
   "name": "expressjs-metrics",
   "description": "Express middleware for collecting and reporting metrics about response times",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "author": {
     "name": "osmeteor",
     "email": "meteorsoftware@qq.com"
@@ -9,7 +9,7 @@
   "main": "index.js",
   "dependencies": {
     "log4js": "^0.6.26",
-    "metrics": "latest",
+    "metricsjs": "latest",
     "mocha": "^2.2.1",
     "node-statsd": "^0.1.1",
     "on-headers": "^1.0.0"
@@ -36,7 +36,7 @@
     "nodejs",
     "express",
     "middleware",
-    "metricsjs",
+    "metrics",
     "cluster",
     "response",
     "times"
