@@ -91,8 +91,12 @@ module.exports.listen = function listen(port) {
 module.exports.close = function close(callback) {
   builder.getServer().stop(callback);
 };
-module.exports.getMetric = function getMetric(name) {
-  var trackedMetrics=builder.getServer().getMetric();
+
+
+
+
+module.exports.getMetricInsideObj = function getMetric(name) {
+  var trackedMetrics=builder.getServer().metrics.getReportSummaryInside()
   if(arguments.length<1){
     if(trackedMetrics)return trackedMetrics;
     else return {};
@@ -101,6 +105,22 @@ module.exports.getMetric = function getMetric(name) {
     if(trackedMetrics[name]) return trackedMetrics[name];
     else return {};
   }
+};
+module.exports.getMetricObj = function getMetric(name) {
+  var trackedMetrics=builder.getServer().metrics.getReportSummary()
+  if(arguments.length<1){
+    if(trackedMetrics)return trackedMetrics;
+    else return {};
+  }
+  else {
+    if(trackedMetrics[name]) return trackedMetrics[name];
+    else return {};
+  }
+};
+
+module.exports.getMetric = function getMetric(name) {
+  return builder.getServer().metrics.report.trackedMetrics;
+
 };
 module.exports.setMetric = function setMetric(trackedMetrics) {
   return builder.getServer().setMetric(trackedMetrics);
