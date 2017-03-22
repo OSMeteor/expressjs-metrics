@@ -4,8 +4,23 @@ var builder = require('./lib/builder');
 var header = require('./lib/header');
 var chrono = require('./lib/chrono');
 var optionsChecker = require('./lib/options.checker');
-
-
+function find(str,cha,num){
+  var x=str.indexOf(cha);
+  for(var i=0;i<num;i++){
+    x=str.indexOf(cha,x+1);
+  }
+  return x;
+}
+function  getRoute(originalUrl,RoutePath) {
+  var re = new RegExp("/","g");
+  var route=RoutePath.match(re);
+  if(route&& RoutePath!="/"){
+    var arr1 = originalUrl.match(re).length-route.length;
+    return originalUrl.substr(0,find(originalUrl,'/',arr1))+RoutePath;
+  }else{
+    return originalUrl;
+  }
+}
 module.exports.expressMetrics = function expressMetrics(options) {
   var client;
   options = optionsChecker.check(options);
@@ -26,20 +41,9 @@ module.exports.expressMetrics = function expressMetrics(options) {
       var diff = process.hrtime(this.startAt);
       var responseTime = diff[0] * 1e3 + diff[1] * 1e-6;
       header.setResponseTime(res, responseTime);
-
-      // call to original express#res.end()
-      // end.apply(res, arguments);
-
-      // console.log({
-      //   route: req.route,
-      //   method: req.method,
-      //   status: res.statusCode,
-      //   time: responseTime
-      // })
-      // console.log(res.statusCode,req.originalUrl)
-      if(res.statusCode>=200&&res.statusCode<400){
+      if(res.statusCode>=200&&res.statusCode<300){
         client.send({
-          route: { path: req.baseUrl+req.route.path, stack: req.route.stack, methods: req.route.methods },
+          route: { path: getRoute(req.originalUrl,req.route.path), stack: req.route.stack, methods: req.route.methods },
           method: req.method,
           status: res.statusCode,
           time: responseTime
@@ -47,6 +51,7 @@ module.exports.expressMetrics = function expressMetrics(options) {
       }else{
         client.send({
           route: req.route,
+          // route: { path: getRoute(req.originalUrl,req.route.path), stack: req.route.stack, methods: req.route.methods },
           // route: { path: res.statusCode, stack: req.route.stack, methods: req.route.methods },
           method: req.method,
           status: res.statusCode,
