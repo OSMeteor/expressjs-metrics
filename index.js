@@ -21,6 +21,7 @@ function  getRoute(originalUrl,RoutePath) {
     return originalUrl;
   }
 }
+var expressMetricsStartTimeDate=new Date().getDate();
 module.exports.expressMetrics = function expressMetrics(options) {
   var client;
   options = optionsChecker.check(options);
@@ -29,9 +30,15 @@ module.exports.expressMetrics = function expressMetrics(options) {
 
   header.init({ header: options.header });
   chrono.init({ decimals: options.decimals });
-
+  expressMetricsStartTimeDate=new Date().getDate();
   return function (req, res, next) {
     // chrono.start();
+    // if(new Date(json.syncTime).getDate()!=new Date().getDate())  return {};
+
+    if(expressMetricsStartTimeDate!=new Date().getDate()){
+      builder.getServer().setMetric({});
+      expressMetricsStartTimeDate=new Date().getDate();
+    }
     res.startAt = process.hrtime();
     res.startTime = new Date();
     // decorate response#end method from express
@@ -101,25 +108,37 @@ module.exports.close = function close(callback) {
 
 
 module.exports.getMetricInsideObj = function getMetric(name) {
-  var trackedMetrics=builder.getServer().metrics.getReportSummaryInside()
-  if(arguments.length<1){
-    if(trackedMetrics)return trackedMetrics;
-    else return {};
-  }
-  else {
-    if(trackedMetrics[name]) return trackedMetrics[name];
-    else return {};
+  if(expressMetricsStartTimeDate!=new Date().getDate()){
+    builder.getServer().setMetric({});
+    expressMetricsStartTimeDate=new Date().getDate();
+    return {};
+  }else{
+    var trackedMetrics=builder.getServer().metrics.getReportSummaryInside()
+    if(arguments.length<1){
+      if(trackedMetrics)return trackedMetrics;
+      else return {};
+    }
+    else {
+      if(trackedMetrics[name]) return trackedMetrics[name];
+      else return {};
+    }
   }
 };
 module.exports.getMetricObj = function getMetric(name) {
-  var trackedMetrics=builder.getServer().metrics.getReportSummary()
-  if(arguments.length<1){
-    if(trackedMetrics)return trackedMetrics;
-    else return {};
-  }
-  else {
-    if(trackedMetrics[name]) return trackedMetrics[name];
-    else return {};
+  if(expressMetricsStartTimeDate!=new Date().getDate()){
+    builder.getServer().setMetric({});
+    expressMetricsStartTimeDate=new Date().getDate();
+    return {};
+  }else {
+    var trackedMetrics=builder.getServer().metrics.getReportSummary()
+    if(arguments.length<1){
+      if(trackedMetrics)return trackedMetrics;
+      else return {};
+    }
+    else {
+      if(trackedMetrics[name]) return trackedMetrics[name];
+      else return {};
+    }
   }
 };
 
