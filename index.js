@@ -22,6 +22,7 @@ function  getRoute(originalUrl,RoutePath) {
   }
 }
 var expressMetricsStartTimeDate=new Date().getDate();
+var clearEveryDay=false;
 module.exports.expressMetrics = function expressMetrics(options) {
   var client;
   options = optionsChecker.check(options);
@@ -30,12 +31,13 @@ module.exports.expressMetrics = function expressMetrics(options) {
 
   header.init({ header: options.header });
   chrono.init({ decimals: options.decimals });
+  clearEveryDay=options.clearEveryDay||false;
   expressMetricsStartTimeDate=new Date().getDate();
   return function (req, res, next) {
     // chrono.start();
     // if(new Date(json.syncTime).getDate()!=new Date().getDate())  return {};
 
-    if(expressMetricsStartTimeDate!=new Date().getDate()){
+    if(clearEveryDay&&(expressMetricsStartTimeDate!=new Date().getDate())){
       builder.getServer().setMetric({});
       expressMetricsStartTimeDate=new Date().getDate();
     }
@@ -55,11 +57,10 @@ module.exports.expressMetrics = function expressMetrics(options) {
           status: res.statusCode,
           time: responseTime
         });
-      }else{
+      }
+      else{
         client.send({
-          route: req.route,
-          // route: { path: getRoute(req.originalUrl,req.route.path), stack: req.route.stack, methods: req.route.methods },
-          // route: { path: res.statusCode, stack: req.route.stack, methods: req.route.methods },
+          route: { path: '*', stack: req.route.stack, methods: req.route.methods },
           method: req.method,
           status: res.statusCode,
           time: responseTime
@@ -67,27 +68,6 @@ module.exports.expressMetrics = function expressMetrics(options) {
       }
 
     })
-    // res.end = function () {
-    //   // var responseTime = chrono.stop();
-    //   var responseTime = new Date() - this.startTime;
-    //   header.setResponseTime(res, responseTime);
-    //
-    //   // call to original express#res.end()
-    //   end.apply(res, arguments);
-    //    // console.log({
-    //    //   route: req.route,
-    //    //   method: req.method,
-    //    //   status: res.statusCode,
-    //    //   time: responseTime
-    //    // })
-    //   client.send({
-    //     route: { path: req.originalUrl, stack: req.route.stack, methods: req.route.methods },
-    //     method: req.method,
-    //     status: res.statusCode,
-    //     time: responseTime
-    //   });
-    // };
-
     next();
   };
 
@@ -108,7 +88,7 @@ module.exports.close = function close(callback) {
 
 
 module.exports.getMetricInsideObj = function getMetric(name) {
-  if(expressMetricsStartTimeDate!=new Date().getDate()){
+  if(clearEveryDay&&(expressMetricsStartTimeDate!=new Date().getDate())){
     builder.getServer().setMetric({});
     expressMetricsStartTimeDate=new Date().getDate();
     return {};
@@ -125,7 +105,7 @@ module.exports.getMetricInsideObj = function getMetric(name) {
   }
 };
 module.exports.getMetricObj = function getMetric(name) {
-  if(expressMetricsStartTimeDate!=new Date().getDate()){
+  if(clearEveryDay&&(expressMetricsStartTimeDate!=new Date().getDate())){
     builder.getServer().setMetric({});
     expressMetricsStartTimeDate=new Date().getDate();
     return {};
