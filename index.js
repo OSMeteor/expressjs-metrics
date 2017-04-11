@@ -23,6 +23,19 @@ function  getRoute(originalUrl,RoutePath) {
 }
 var expressMetricsStartTimeDate=new Date().getDate();
 var clearEveryDay=false;
+var filterPaths=[];
+function filterPathsBool(regs,url) {
+  if(regs.length<=0) return true;
+  else {
+      for (var i=0;i<regs.length;i++){
+          var reg=new RegExp(regs[i],"g");
+          if(reg.test(url)){ return true; break; }
+      }
+      return false;
+    }
+}
+
+
 module.exports.expressMetrics = function expressMetrics(options) {
   var client;
   options = optionsChecker.check(options);
@@ -32,6 +45,7 @@ module.exports.expressMetrics = function expressMetrics(options) {
   header.init({ header: options.header });
   chrono.init({ decimals: options.decimals });
   clearEveryDay=options.clearEveryDay||false;
+  filterPaths=options.filterPaths||[];
   expressMetricsStartTimeDate=new Date().getDate();
   return function (req, res, next) {
     // chrono.start();
@@ -50,13 +64,15 @@ module.exports.expressMetrics = function expressMetrics(options) {
       var diff = process.hrtime(this.startAt);
       var responseTime = diff[0] * 1e3 + diff[1] * 1e-6;
       header.setResponseTime(res, responseTime);
-      if(res.statusCode>=200&&res.statusCode<300){
-        client.send({
-          route: { path: getRoute(req.originalUrl,req.route.path), stack: req.route.stack, methods: req.route.methods },
-          method: req.method,
-          status: res.statusCode,
-          time: responseTime
-        });
+      var routePath=getRoute(req.originalUrl,req.route.path);
+       if((filterPathsBool(filterPaths,routePath))&&res.statusCode>=200&&res.statusCode<300){
+
+          client.send({
+            route: { path: routePath, stack: req.route.stack, methods: req.route.methods },
+            method: req.method,
+            status: res.statusCode,
+            time: responseTime
+          });
       }
       else{
         client.send({

@@ -1,7 +1,7 @@
 {
   "name": "expressjs-metrics",
   "description": "Express middleware for collecting and reporting metrics about response times",
-  "version": "0.0.15",
+  "version": "0.0.16",
   "author": {
     "name": "osmeteor",
     "email": "meteorsoftware@qq.com"
