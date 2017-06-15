@@ -31,6 +31,9 @@ app.get('/', function (req, res, next) {
   res.json({ greet: 'Hello world!' });
 });
 ```
+P50、P90和P99等指标常用于系统性能监控场景，指高于50%、90%、99%等百分线的情况。
+p90 is a minimum time under which 90% of requests have been served. Imagine you have times
+[https://www.zhihu.com/question/41110088](https://www.zhihu.com/question/41110088)
 
 In _:8091/metrics_:
 ```js
